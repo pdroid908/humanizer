@@ -13,7 +13,12 @@ app.use(cors());
 app.use(express.json({ limit: "10kb" }));
 
 const groq = new Groq({ apiKey: process.env.GEMINI_API_KEY });
-
+//Di server.js
+const corsOptions = {
+  origin: 'https://humanizer-638.pages.dev/', // HANYA website ini yang boleh akses
+  methods: ['POST'] // HANYA boleh kirim data
+};
+app.use(cors(corsOptions));
 const limiter = rateLimit({
   windowMs: 60 * 1000, // 1 menit
   max: 2,
@@ -94,9 +99,4 @@ app.listen(PORT, () => {
 });
 
 
-// Di server.js
-// const corsOptions = {
-//   origin: 'https://nama-website-kamu.com', // HANYA website ini yang boleh akses
-//   methods: ['POST'] // HANYA boleh kirim data
-// };
-// app.use(cors(corsOptions));
+
