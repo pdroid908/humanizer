@@ -52,18 +52,20 @@ app.post(
       const result = await queue.add(async () => {
         const prompt = `
 
-Tulis ulang teks berikut agar terdengar alami seperti tulisan manusia.
+Tulis ulang teks target  dengan aturan ini:
 
 Aturan:
-- Pertahankan makna asli.
-- Variasikan panjang dan struktur kalimat.
-- Hindari frasa khas AI dan kalimat yang terlalu formal atau terlalu rapi.
-- Jangan menambah informasi baru.
-- buat buritnes nya meningkat 50% dari teks asli
+- tingkatkan buritnes teks sebanyak 30% dari teks asli.
+- tingkatkan Perplexity 
+- kurangi Konsistensi Gaya jangan Terlalu Sempurna
+- makna atau pembahasan masih sama
+- Transisi jangan Terlalu Mulus
 - Jika teks bukan artikel, opini, penjelasan, atau pembahasan, kembalikan apa adanya.
+- Distribusi Kosakata buat Kadang ada kalimat yang kurang efisien.
+- N-gram yang muncul buat lebih unik
 - Output hanya hasil akhir, tanpa komentar atau penjelasan.
 
-Teks:
+Teks target:
 "${text}"
 
 `;
