@@ -4,7 +4,8 @@ const HumanizeTool: React.FC = () => {
   const [outputText, setOutputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const API_URL = "https://humanizer-production-1a4c.up.railway.app/api/humanize";
+  const API_URL =
+    "https://humanizer-production-1a4c.up.railway.app/api/humanize";
   // 1. Efek Timer: Error hilang otomatis setelah 5 detik
   useEffect(() => {
     if (error) {
@@ -25,7 +26,7 @@ const HumanizeTool: React.FC = () => {
       setError("Teks terlalu panjang. Maksimal 3000 karakter.");
       return;
     }
- 
+
     setIsLoading(true);
     setError(null);
     setOutputText(""); // Reset hasil sebelumnya
@@ -41,7 +42,9 @@ const HumanizeTool: React.FC = () => {
       // A. Menangani Error dari Backend (Misal: 400 Bad Request, 500 Internal Server)
       if (!response.ok) {
         if (response.status === 404) {
-          throw new Error("API tidak ditemukan (404). Periksa konfigurasi URL.");
+          throw new Error(
+            "API tidak ditemukan (404). Periksa konfigurasi URL.",
+          );
         } else if (response.status === 429) {
           throw new Error("Terlalu banyak request, tunggu sebentar ya!");
         } else if (response.status >= 500) {
@@ -60,7 +63,6 @@ const HumanizeTool: React.FC = () => {
   };
 
   return (
-    
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 flex items-center justify-center p-4 md:p-8 overflow-hidden relative">
       {/* Background Glow */}
       <div className="absolute top-0 left-0 w-72 h-72 md:w-96 md:h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"></div>
@@ -69,21 +71,23 @@ const HumanizeTool: React.FC = () => {
 
       {/* Main Card */}
       <div className="relative w-full max-w-7xl rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_0_80px_rgba(0,0,0,0.4)] p-5 sm:p-6 md:p-10">
-        
-        {/* Header */}
+        {/* Header SEO Optimized */}
         <div className="text-center mb-8 md:mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-cyan-300 text-xs sm:text-sm tracking-widest uppercase">
             ✨ AI Powered Humanizer
           </div>
-         
 
+          {/* H1 Tag Penting untuk SEO */}
           <h1 className="mt-5 text-4xl sm:text-5xl md:text-6xl font-black text-white leading-tight">
-            AI Humanizer
+            AI Humanizer: Ubah Teks AI Jadi Alami
           </h1>
 
+          {/* Deskripsi Deskriptif untuk Keyword SEO */}
           <p className="mt-4 text-sm sm:text-base md:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed px-2">
-            Transform AI-generated text into smooth, natural, and human-like
-            writing with modern intelligence.
+            Ubah teks hasil generate ChatGPT, Claude, atau AI lainnya menjadi
+            tulisan yang lebih natural, manusiawi, dan lolos deteksi AI. Gunakan
+            alat AI Humanizer kami untuk membuat konten Anda lebih orisinal dan
+            mudah dibaca.
           </p>
         </div>
 
