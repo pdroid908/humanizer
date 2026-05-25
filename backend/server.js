@@ -16,7 +16,7 @@ const MODEL_NAME = "gemini-2.5-flash";
 
 const limiter = rateLimit({
     windowMs: 60 * 1000, // 1 menit
-    max: 3, 
+    max: 10, 
     message: { error: "Terlalu banyak permintaan. Tunggu 1 menit ya." }
 });
 
@@ -41,7 +41,7 @@ app.post('/api/humanize', [
         const result = await queue.add(async () => {
             const model = genAI.getGenerativeModel({ model: MODEL_NAME });
             const prompt = `
-                ingat teks yang di analisa itu adalah jawaban, jadi kamu bukan jawab tapi ingat konteks dan lakukan kebalikan dari semua informasi di dalam kurung ini:
+                tugas mu humanize teks yang di analisa untuk hindari logika ai detektor berikut :
                 (Perplexity – seberapa mudah kata dan kalimat diprediksi.
                 Burstiness – variasi panjang dan struktur kalimat.
                 Konsistensi gaya – apakah seluruh teks terdengar terlalu seragam.
@@ -51,7 +51,7 @@ app.post('/api/humanize', [
                 Pengalaman dan sudut pandang pribadi – tulisan manusia sering memuat opini, pengalaman, atau contoh spesifik.
                 Variasi ritme bahasa – manusia cenderung tidak selalu menulis dengan pola yang konsisten.)
             
-                jadi dari semua logika itu jangan beri penjelasan , langsung ubah teksnya saja, dan buat formal bahasanya jadi pantas untuk jawaban pelajar, dan hilangkan bold jadi hanya plain text
+                jadi dari semua logika itu jangan beri penjelasan , langsung humanize teks jangan di rusak konteks pembahasan, dan buat formal bahasanya jadi pantas untuk jawaban pelajar, dan hilangkan bold jadi hanya plain text
                 Teks yang dianalisis: "${text}"
             `; // Sederhanakan prompt jika perlu
             const response = await model.generateContent(prompt);
