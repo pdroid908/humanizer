@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 const HumanizeTool: React.FC = () => {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
@@ -61,6 +60,7 @@ const HumanizeTool: React.FC = () => {
   };
 
   return (
+    
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 flex items-center justify-center p-4 md:p-8 overflow-hidden relative">
       {/* Background Glow */}
       <div className="absolute top-0 left-0 w-72 h-72 md:w-96 md:h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"></div>
@@ -69,11 +69,13 @@ const HumanizeTool: React.FC = () => {
 
       {/* Main Card */}
       <div className="relative w-full max-w-7xl rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_0_80px_rgba(0,0,0,0.4)] p-5 sm:p-6 md:p-10">
+        
         {/* Header */}
         <div className="text-center mb-8 md:mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-cyan-300 text-xs sm:text-sm tracking-widest uppercase">
             ✨ AI Powered Humanizer
           </div>
+         
 
           <h1 className="mt-5 text-4xl sm:text-5xl md:text-6xl font-black text-white leading-tight">
             AI Humanizer

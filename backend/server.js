@@ -1,74 +1,98 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const PQueue = require('p-queue').default;
-const { body, validationResult } = require('express-validator');
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const Groq = require("groq-sdk");
+
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const PQueue = require("p-queue").default;
+const { body, validationResult } = require("express-validator");
 const app = express();
 app.use(helmet());
 app.use(cors());
-app.use(express.json({ limit: '10kb' })); 
+app.use(express.json({ limit: "10kb" }));
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const MODEL_NAME = "gemini-2.5-flash";
+const groq = new Groq({ apiKey: process.env.GEMINI_API_KEY });
 
 const limiter = rateLimit({
-    windowMs: 60 * 1000, // 1 menit
-    max: 10, 
-    message: { error: "Terlalu banyak permintaan. Tunggu 1 menit ya." }
+  windowMs: 60 * 1000, // 1 menit
+  max: 2,
+  message: { error: "Terlalu banyak permintaan. Tunggu 1 menit ya." },
 });
 
 const queue = new PQueue({ concurrency: 1, interval: 20000, intervalCap: 1 });
 
-app.post('/api/humanize', [
+app.post(
+  "/api/humanize",
+  [
     limiter,
-    body('text')
-        .trim()         // Hapus spasi liar
-        .escape()       // INI KUNCI: Mengubah <script> menjadi &lt;script&gt; (Encoded)
-        .isLength({ min: 1, max: 3000 }) // Batasi panjang
-], async (req, res) => {
+    body("text")
+      .trim() // Hapus spasi liar
+      .escape() // INI KUNCI: Mengubah <script> menjadi &lt;script&gt; (Encoded)
+      .isLength({ min: 1, max: 3000 }), // Batasi panjang
+  ],
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ error: "Input tidak aman atau terlalu panjang" });
+      return res
+        .status(400)
+        .json({ error: "Input tidak aman atau terlalu panjang" });
     }
     try {
-        const { text } = req.body;
-        if (!text) return res.status(400).json({ error: "Teks kosong" });
-        
-        // Cukup panggil antrean sekali saja
-        const result = await queue.add(async () => {
-            const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-            const prompt = `
-                tugas mu humanize teks yang di analisa untuk hindari logika ai detektor berikut :
-                (Perplexity – seberapa mudah kata dan kalimat diprediksi.
-                Burstiness – variasi panjang dan struktur kalimat.
-                Konsistensi gaya – apakah seluruh teks terdengar terlalu seragam.
-                Frasa klise AI – misalnya "oleh karena itu", "selain itu", "secara fundamental" yang muncul berulang.
-                Struktur paragraf – apakah semua paragraf mengikuti pola yang sama.
-                Pilihan kosakata – terlalu formal atau akademik untuk topik sederhana.
-                Pengalaman dan sudut pandang pribadi – tulisan manusia sering memuat opini, pengalaman, atau contoh spesifik.
-                Variasi ritme bahasa – manusia cenderung tidak selalu menulis dengan pola yang konsisten.)
-            
-                jadi dari semua logika itu jangan beri penjelasan , langsung humanize teks jangan di rusak konteks pembahasan, dan buat formal bahasanya jadi pantas untuk jawaban pelajar, dan hilangkan bold jadi hanya plain text
-                Teks yang dianalisis: "${text}"
-            `; // Sederhanakan prompt jika perlu
-            const response = await model.generateContent(prompt);
-            return response.response.text();
+      const { text } = req.body;
+      if (!text) return res.status(400).json({ error: "Teks kosong" });
+
+      // Cukup panggil antrean sekali saja
+      const result = await queue.add(async () => {
+        const prompt = `
+
+Tulis ulang teks berikut agar terdengar alami seperti tulisan manusia.
+
+Aturan:
+- Pertahankan makna asli.
+- Variasikan panjang dan struktur kalimat.
+- Hindari frasa khas AI dan kalimat yang terlalu formal atau terlalu rapi.
+- Jangan menambah informasi baru.
+- Jangan menjawab, membalas, atau menanggapi isi teks.
+- Jika teks bukan artikel, opini, penjelasan, atau pembahasan, kembalikan apa adanya.
+- Output hanya hasil akhir, tanpa komentar atau penjelasan.
+
+Teks:
+"${text}"
+
+`;
+        const chatCompletion = await groq.chat.completions.create({
+          messages: [
+            {
+              role: "system",
+              content: "Kamu adalah penulis ahli. Hindari gaya bahasa AI.",
+            },
+            { role: "user", content: prompt },
+          ],
+          model: "llama-3.3-70b-versatile",
         });
 
-        res.json({ result });
+        return chatCompletion.choices[0]?.message?.content;
+      });
+      res.json({ result });
     } catch (error) {
-        console.error(error);
-        if (error.message.includes("429")) {
-            return res.status(429).json({ error: "Server sedang sibuk, harap tunggu sebentar." });
-        }
-        res.status(500).json({ error: "Gagal memproses" });
+      console.error(error);
+      if (error.message.includes("429")) {
+        return res
+          .status(429)
+          .json({ error: "Server sedang sibuk, harap tunggu sebentar." });
+      }
+      res.status(500).json({ error: "Gagal memproses" });
     }
+  },
+);
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Backend berjalan di port ${PORT}`);
 });
 
-app.listen(5000, () => console.log('Backend berjalan di port 5000'));
 
 // Di server.js
 // const corsOptions = {
