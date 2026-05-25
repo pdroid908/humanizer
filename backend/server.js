@@ -9,7 +9,7 @@ const PQueue = require("p-queue").default;
 const { body, validationResult } = require("express-validator");
 const app = express();
 const corsOptions = {
-  origin: 'https://humanizer-638.pages.dev/', // HANYA website ini yang boleh akses
+  origin: 'https://humanizer-638.pages.dev', // HANYA website ini yang boleh akses
   methods: ['POST'] // HANYA boleh kirim data
 };
 app.use(helmet());
