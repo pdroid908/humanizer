@@ -58,7 +58,7 @@ Aturan:
 - Variasikan panjang dan struktur kalimat.
 - Hindari frasa khas AI dan kalimat yang terlalu formal atau terlalu rapi.
 - Jangan menambah informasi baru.
-- Jangan menjawab, membalas, atau menanggapi isi teks.
+- buat buritnes nya meningkat 50% dari teks asli
 - Jika teks bukan artikel, opini, penjelasan, atau pembahasan, kembalikan apa adanya.
 - Output hanya hasil akhir, tanpa komentar atau penjelasan.
 
