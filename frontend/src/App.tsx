@@ -25,14 +25,14 @@ const HumanizeTool: React.FC = () => {
       setError("Teks terlalu panjang. Maksimal 3000 karakter.");
       return;
     }
-
+ 
     setIsLoading(true);
     setError(null);
     setOutputText(""); // Reset hasil sebelumnya
 
     try {
       // Menghubungkan ke backend kita di port 5000
-      const response = await fetch("http://localhost:5000/api/humanize", {
+      const response = await fetch("humanizer-production-1a4c.up.railway.app", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: inputText }), // Mengirim teks ke backend
