@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { loadAds } from "./lib/ads";
 const HumanizeTool: React.FC = () => {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
@@ -8,6 +9,7 @@ const HumanizeTool: React.FC = () => {
     "https://humanizer-production-1a4c.up.railway.app/api/humanize";
   // 1. Efek Timer: Error hilang otomatis setelah 5 detik
   useEffect(() => {
+    loadAds();
     if (error) {
       const timer = setTimeout(() => {
         setError(null);
@@ -222,7 +224,15 @@ const HumanizeTool: React.FC = () => {
         {/* Button */}
         <div className="hidden lg:block mt-7">
           <button
-            onClick={handleHumanize}
+            onClick={() => {
+              handleHumanize();
+
+              window.open(
+                "https://omg10.com/4/11057056",
+                "_blank",
+                "noopener,noreferrer",
+              );
+            }}
             disabled={isLoading}
             className="
       w-full
