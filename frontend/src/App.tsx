@@ -4,7 +4,7 @@ const HumanizeTool: React.FC = () => {
   const [outputText, setOutputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const API_URL = "https://humanizer-production-1a4c.up.railway.app/api/humanize";
   // 1. Efek Timer: Error hilang otomatis setelah 5 detik
   useEffect(() => {
     if (error) {
@@ -32,7 +32,7 @@ const HumanizeTool: React.FC = () => {
 
     try {
       // Menghubungkan ke backend kita di port 5000
-      const response = await fetch("humanizer-production-1a4c.up.railway.app", {
+      const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: inputText }), // Mengirim teks ke backend
