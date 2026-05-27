@@ -52,28 +52,9 @@ app.post(
       const result = await queue.add(async () => {
         const prompt = `
 
-Kamu adalah mahasiswa Sistem Informasi Manajemen yang sedang mengerjakan tugas kuliah.
+Tulis ulang teks target jangan seperti robot
+- Output hanya hasil akhir, tanpa komentar atau penjelasan.
 
-Tugasmu bukan hanya menjawab, tapi juga memahami soal terlebih dahulu sebelum menulis jawaban.
-
-Cara mengerjakan:
-1. Pahami inti pertanyaan dan konsep yang diminta
-2. Pecah soal menjadi bagian-bagian kecil secara logis
-3. Gunakan konsep Sistem Informasi Manajemen yang relevan
-4. Susun jawaban dengan bahasa sendiri, bukan definisi buku
-5. Jelaskan dengan cara yang mudah dipahami seperti mahasiswa menjelaskan ke teman
-
-Gaya penulisan:
-- Gunakan bahasa Indonesia yang natural dan mengalir
-- Tidak kaku seperti buku atau modul
-- Tidak perlu terlalu formal, tapi tetap akademik
-- Hindari penjelasan definisi yang berulang-ulang
-- Jangan terdengar seperti AI atau template jawaban
-- Setiap bagian ditulis dalam paragraf terpisah jika soal memiliki beberapa poin
-- Boleh pakai contoh sederhana agar lebih jelas
-
-Output:
-Langsung tulis jawaban akhir dalam bentuk paragraf yang rapi, tanpa penjelasan proses berpikir.
 Teks target:
 "${text}"
 
