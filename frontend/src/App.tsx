@@ -157,12 +157,6 @@ const HumanizeTool: React.FC = () => {
               </span>
             </div>
 
-            {aiPercent !== null && (
-              <div className="mb-3 p-3 rounded-xl bg-red-900/30 border border-red-500 text-red-200">
-                🤖 AI Detection: <b>{aiPercent}% AI</b>
-              </div>
-            )}
-
             <textarea
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
@@ -192,6 +186,51 @@ const HumanizeTool: React.FC = () => {
                 shadow-inner
               "
             />
+            {/* Button */}
+            <div className="flex flex-col lg:flex-row gap-3 mt-7">
+              <button
+                onClick={handleHumanize}
+                disabled={isLoading}
+                className="
+    flex-1
+    py-4
+    rounded-3xl
+    bg-gradient-to-r
+    from-cyan-400
+    via-blue-500
+    to-indigo-500
+    text-white
+    font-bold
+    hover:scale-[1.02]
+    transition-all
+  "
+              >
+                {isLoading ? "Processing..." : "✨ Humanize Now"}
+              </button>
+
+              <button
+                onClick={handleDetectAI}
+                disabled={isDetecting}
+                className="
+    flex-1
+    py-4
+    rounded-3xl
+    bg-red-500
+    text-white
+    font-bold
+    hover:scale-[1.02]
+    transition-all
+  "
+              >
+                {isDetecting ? "Detecting..." : "🔍 Detect AI"}
+              </button>
+            </div>
+            {aiPercent !== null && (
+              <div className="mb-3 p-3 rounded-xl bg-red-900/30 border border-red-500 text-red-200">
+                🤖 AI Detection: <b>{aiPercent}% AI</b>
+              </div>
+            )}
+
           </div>
 
           {/* OUTPUT */}
@@ -255,46 +294,6 @@ const HumanizeTool: React.FC = () => {
               )}
             </div>
           </div>
-        </div>
-
-        {/* Button */}
-        <div className="flex flex-col lg:flex-row gap-3 mt-7">
-          <button
-            onClick={handleHumanize}
-            disabled={isLoading}
-            className="
-    flex-1
-    py-4
-    rounded-3xl
-    bg-gradient-to-r
-    from-cyan-400
-    via-blue-500
-    to-indigo-500
-    text-white
-    font-bold
-    hover:scale-[1.02]
-    transition-all
-  "
-          >
-            {isLoading ? "Processing..." : "✨ Humanize Now"}
-          </button>
-
-          <button
-            onClick={handleDetectAI}
-            disabled={isDetecting}
-            className="
-    flex-1
-    py-4
-    rounded-3xl
-    bg-red-500
-    text-white
-    font-bold
-    hover:scale-[1.02]
-    transition-all
-  "
-          >
-            {isDetecting ? "Detecting..." : "🔍 Detect AI"}
-          </button>
         </div>
       </div>
 

@@ -93,7 +93,7 @@ app.post(
     limiter,
     body("text")
       .trim()
-      .isLength({ min: 1, max: 3000 }),
+      .isLength({ min: 1, max: 5000 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -106,12 +106,11 @@ app.post(
 
       const result = await queue.add(async () => {
         const prompt = `
-Berikan estimasi 0-100 seberapa besar kemungkinan teks ini ditulis oleh AI.
+Berikan estimasi 0-100 % seberapa besar kemungkinan teks ini ditulis oleh robot/ai.
 
 Aturan:
 - Jawab hanya angka
 - Tidak boleh ada teks lain
-- Berdasarkan gaya penulisan, struktur, dan kerapian teks
 
 Teks:
 "${text}"
