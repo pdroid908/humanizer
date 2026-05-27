@@ -4,6 +4,11 @@ const HumanizeTool: React.FC = () => {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const [aiPercent, setAiPercent] = useState<number | null>(null);
+  const [isDetecting, setIsDetecting] = useState(false);
+  const DETECT_URL =
+    "https://humanizer-production-1a4c.up.railway.app/api/detect";
   const [error, setError] = useState<string | null>(null);
   const API_URL =
     "https://humanizer-production-1a4c.up.railway.app/api/humanize";
@@ -61,6 +66,32 @@ const HumanizeTool: React.FC = () => {
       setError(error.message || "Terjadi kesalahan yang tidak terduga.");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDetectAI = async () => {
+    if (!inputText.trim()) {
+      setError("Teks tidak boleh kosong.");
+      return;
+    }
+
+    setIsDetecting(true);
+    setAiPercent(null);
+    setError(null);
+
+    try {
+      const response = await fetch(DETECT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: inputText }),
+      });
+
+      const data = await response.json();
+      setAiPercent(data.aiPercent);
+    } catch (err: any) {
+      setError(err.message || "Gagal detect AI");
+    } finally {
+      setIsDetecting(false);
     }
   };
 
@@ -126,6 +157,12 @@ const HumanizeTool: React.FC = () => {
               </span>
             </div>
 
+            {aiPercent !== null && (
+              <div className="mb-3 p-3 rounded-xl bg-red-900/30 border border-red-500 text-red-200">
+                🤖 AI Detection: <b>{aiPercent}% AI</b>
+              </div>
+            )}
+
             <textarea
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
@@ -156,26 +193,6 @@ const HumanizeTool: React.FC = () => {
               "
             />
           </div>
-
-          <button
-            onClick={handleHumanize}
-            disabled={isLoading}
-            className="
-    order-2
-    lg:hidden
-    w-full
-    py-4
-    rounded-3xl
-    bg-gradient-to-r
-    from-cyan-400
-    via-blue-500
-    to-indigo-500
-    text-white
-    font-bold
-  "
-          >
-            {isLoading ? "Processing..." : "✨ Humanize Now"}
-          </button>
 
           {/* OUTPUT */}
           <div className="flex flex-col order-3">
@@ -241,26 +258,42 @@ const HumanizeTool: React.FC = () => {
         </div>
 
         {/* Button */}
-        <div className="hidden lg:block mt-7">
+        <div className="flex flex-col lg:flex-row gap-3 mt-7">
           <button
-            onClick={() => {
-              handleHumanize();
-            }}
+            onClick={handleHumanize}
             disabled={isLoading}
             className="
-      w-full
-      py-4
-      sm:py-5
-      rounded-3xl
-      bg-gradient-to-r
-      from-cyan-400
-      via-blue-500
-      to-indigo-500
-      text-white
-      font-bold
-    "
+    flex-1
+    py-4
+    rounded-3xl
+    bg-gradient-to-r
+    from-cyan-400
+    via-blue-500
+    to-indigo-500
+    text-white
+    font-bold
+    hover:scale-[1.02]
+    transition-all
+  "
           >
             {isLoading ? "Processing..." : "✨ Humanize Now"}
+          </button>
+
+          <button
+            onClick={handleDetectAI}
+            disabled={isDetecting}
+            className="
+    flex-1
+    py-4
+    rounded-3xl
+    bg-red-500
+    text-white
+    font-bold
+    hover:scale-[1.02]
+    transition-all
+  "
+          >
+            {isDetecting ? "Detecting..." : "🔍 Detect AI"}
           </button>
         </div>
       </div>
