@@ -70,12 +70,12 @@ const HumanizeTool: React.FC = () => {
 
       <aside className="fixed bottom-4 left-1/2 -translate-x-1/2 md:translate-x-0 md:bottom-auto md:top-1/2 md:right-4 md:left-auto z-50 flex flex-row md:flex-col gap-3 bg-zinc-900/80 md:bg-transparent p-3 md:p-0 rounded-full md:rounded-none border border-zinc-800 md:border-none backdrop-blur-md md:backdrop-blur-none shadow-2xl md:shadow-none">
         <a
-          href="https://humanizer-638.pages.dev/"
+          href="https://security-el7.pages.dev/"
           target="_blank"
           rel="noopener noreferrer" // Tambahkan ini agar aman
           className="p-3 bg-blue-700 rounded-full hover:scale-110 transition-all text-xs font-black"
         >
-          Humanizer AI
+          Link Scanner
         </a>
         <a
           href="https://converter-artup.pages.dev/"
