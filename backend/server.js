@@ -52,7 +52,7 @@ app.post(
       const result = await queue.add(async () => {
         const prompt = `
 
-perhatikan teks target, jika teks  di bawah 20 kata atau teks bukan pembahasan suatu konteks atau cuma menyapa , tulisa ulang teksnya, kamu di larang membocorkan diri kalau kamu ai di belakang layar
+perhatikan teks target, jika teks  di bawah 20 kata atau teks bukan pembahasan suatu konteks atau cuma menyapa kasih teksnya balik, kamu di larang membocorkan diri kalau kamu ai di belakang layar
 kamu adalah mesin untuk merubah teks supaya tidak seperti robot, kamu hanya memberi teks yang di rubah supaya tidak seperti robot,
 sebelum ubah pahami pembahasan, lalu kamu cek berapa persen teks target itu seperti robot lalu kamu rubah supaya persennanya lebih kecil dari yang sebelumnya
 - Output hanya hasil akhir, tanpa komentar atau penjelasan.
@@ -87,62 +87,6 @@ Teks target:
   },
 );
 
-app.post(
-  "/api/detect",
-  [
-    limiter,
-    body("text")
-      .trim()
-      .isLength({ min: 1, max: 5000 }),
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ error: "Input tidak valid" });
-    }
-
-    try {
-      const { text } = req.body;
-
-      const result = await queue.add(async () => {
-        const prompt = `
-Berikan estimasi 0-100 % seberapa besar kemungkinan teks ini ditulis oleh robot/ai.
-
-Aturan:
-- Jawab hanya angka
-- Tidak boleh ada teks lain
-
-Teks:
-"${text}"
-`;
-
-        const chatCompletion = await groq.chat.completions.create({
-          messages: [
-            {
-              role: "system",
-              content: "Kamu adalah AI analyzer.",
-            },
-            { role: "user", content: prompt },
-          ],
-          model: "llama-3.3-70b-versatile",
-        });
-
-        const aiPercent = parseInt(
-          chatCompletion.choices[0]?.message?.content?.trim() || "50"
-        );
-
-        return aiPercent;
-      });
-
-      res.json({
-        aiPercent: result,
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Gagal mendeteksi AI" });
-    }
-  }
-);
 
 const PORT = process.env.PORT || 8080; 
 

@@ -5,10 +5,6 @@ const HumanizeTool: React.FC = () => {
   const [outputText, setOutputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const [aiPercent, setAiPercent] = useState<number | null>(null);
-  const [isDetecting, setIsDetecting] = useState(false);
-  const DETECT_URL =
-    "https://humanizer-production-1a4c.up.railway.app/api/detect";
   const [error, setError] = useState<string | null>(null);
   const API_URL =
     "https://humanizer-production-1a4c.up.railway.app/api/humanize";
@@ -69,54 +65,12 @@ const HumanizeTool: React.FC = () => {
     }
   };
 
-  const handleDetectAI = async () => {
-    if (!inputText.trim()) {
-      setError("Teks tidak boleh kosong.");
-      return;
-    }
-
-    setIsDetecting(true);
-    setAiPercent(null);
-    setError(null);
-
-    try {
-      const response = await fetch(DETECT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: inputText }),
-      });
-
-      const data = await response.json();
-      setAiPercent(data.aiPercent);
-    } catch (err: any) {
-      setError(err.message || "Gagal detect AI");
-    } finally {
-      setIsDetecting(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 flex items-center justify-center p-4 md:p-8 overflow-hidden relative">
       {/* Background Glow */}
 
-      <aside className="fixed bottom-4 left-1/2 -translate-x-1/2 md:translate-x-0 md:bottom-auto md:top-1/2 md:right-4 md:left-auto z-50 flex flex-row md:flex-col gap-3 bg-zinc-900/80 md:bg-transparent p-3 md:p-0 rounded-full md:rounded-none border border-zinc-800 md:border-none backdrop-blur-md md:backdrop-blur-none shadow-2xl md:shadow-none">
-        <a
-          href="https://security-el7.pages.dev/"
-          target="_blank"
-          rel="noopener noreferrer" // Tambahkan ini agar aman
-          className="p-3 bg-blue-700 rounded-full hover:scale-110 transition-all text-xs font-black"
-        >
-          Link Scanner
-        </a>
-        <a
-          href="https://converter-artup.pages.dev/"
-          target="_blank"
-          rel="noopener noreferrer" // Tambahkan ini agar aman
-          className="p-3 bg-pink-700 rounded-full hover:scale-110 transition-all text-xs font-black"
-        >
-          foto converter
-        </a>
-      </aside>
+      
       <div className="absolute top-0 left-0 w-72 h-72 md:w-96 md:h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"></div>
 
       <div className="absolute bottom-0 right-0 w-72 h-72 md:w-96 md:h-96 bg-fuchsia-500/20 rounded-full blur-3xl animate-pulse"></div>
@@ -207,29 +161,7 @@ const HumanizeTool: React.FC = () => {
               >
                 {isLoading ? "Processing..." : "✨ Humanize Now"}
               </button>
-
-              <button
-                onClick={handleDetectAI}
-                disabled={isDetecting}
-                className="
-    flex-1
-    py-4
-    rounded-3xl
-    bg-red-500
-    text-white
-    font-bold
-    hover:scale-[1.02]
-    transition-all
-  "
-              >
-                {isDetecting ? "Detecting..." : "🔍 Detect AI"}
-              </button>
             </div>
-            {aiPercent !== null && (
-              <div className="mb-3 p-3 rounded-xl bg-red-900/30 border border-red-500 text-red-200">
-                🤖 AI Detection: <b>{aiPercent}% AI</b>
-              </div>
-            )}
 
           </div>
 
