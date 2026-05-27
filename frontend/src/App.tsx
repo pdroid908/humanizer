@@ -245,12 +245,6 @@ const HumanizeTool: React.FC = () => {
           <button
             onClick={() => {
               handleHumanize();
-
-              window.open(
-                "https://omg10.com/4/11057056",
-                "_blank",
-                "noopener,noreferrer",
-              );
             }}
             disabled={isLoading}
             className="
