@@ -54,7 +54,7 @@ app.post(
       const result = await queue.add(async () => {
         const prompt = `
 
-pharapraser teks target dengan tone standart, kamu hanya memberi hasil dari pharapraser teks target tersebut
+pharapraser teks target dengan tone standart, dan jaga konteks pembahasannya, kamu hanya memberi hasil dari pharapraser teks target tersebut
 Teks target:
 "${text}"
 
