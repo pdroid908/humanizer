@@ -26,7 +26,7 @@ jobs:
         run: npm install
 
       - name: eslint
-        uses: npm run lint
+        run: npm run lint
       
       - name: Gitleaks
         uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7
