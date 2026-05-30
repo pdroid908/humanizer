@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { loadAds } from "./lib/ads";
 const HumanizeTool: React.FC = () => {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
@@ -10,7 +9,7 @@ const HumanizeTool: React.FC = () => {
     "https://humanizer-production-1a4c.up.railway.app/api/humanize";
   // 1. Efek Timer: Error hilang otomatis setelah 5 detik
   useEffect(() => {
-    loadAds();
+    
     if (error) {
       const timer = setTimeout(() => {
         setError(null);
@@ -65,12 +64,10 @@ const HumanizeTool: React.FC = () => {
     }
   };
 
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 flex items-center justify-center p-4 md:p-8 overflow-hidden relative">
       {/* Background Glow */}
 
-      
       <div className="absolute top-0 left-0 w-72 h-72 md:w-96 md:h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"></div>
 
       <div className="absolute bottom-0 right-0 w-72 h-72 md:w-96 md:h-96 bg-fuchsia-500/20 rounded-full blur-3xl animate-pulse"></div>
@@ -162,7 +159,6 @@ const HumanizeTool: React.FC = () => {
                 {isLoading ? "Processing..." : "✨ Humanize Now"}
               </button>
             </div>
-
           </div>
 
           {/* OUTPUT */}
@@ -188,42 +184,37 @@ const HumanizeTool: React.FC = () => {
               )}
             </div>
 
-            <div
-              className="
-                w-full
-                h-[280px]
-                sm:h-[320px]
-                md:h-[380px]
-                rounded-3xl
-                bg-slate-900/80
-                border
-                border-white/10
-                p-5
-                overflow-auto
-                shadow-inner
-              "
-            >
-              {isLoading ? (
-                <div className="h-full flex flex-col items-center justify-center gap-5">
-                  <div className="relative">
-                    <div className="w-14 h-14 border-4 border-cyan-500/20 rounded-full"></div>
+            <div className="w-full h-[280px] sm:h-[320px] md:h-[380px] rounded-3xl bg-slate-900/80 border border-white/10 p-5 overflow-auto shadow-inner">
+              {(() => {
+                // Logika di sini untuk menentukan apa yang ditampilkan
+                if (isLoading) {
+                  return (
+                    <div className="h-full flex flex-col items-center justify-center gap-5">
+                      <div className="relative">
+                        <div className="w-14 h-14 border-4 border-cyan-500/20 rounded-full"></div>
+                        <div className="absolute top-0 left-0 w-14 h-14 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                      </div>
+                      <p className="text-white/60 text-sm sm:text-base animate-pulse">
+                        Humanizing your content...
+                      </p>
+                    </div>
+                  );
+                }
 
-                    <div className="absolute top-0 left-0 w-14 h-14 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                if (outputText) {
+                  return (
+                    <p className="text-gray-100 leading-8 whitespace-pre-wrap text-sm sm:text-base">
+                      {outputText}
+                    </p>
+                  );
+                }
+
+                return (
+                  <div className="h-full flex items-center justify-center text-center text-gray-500 text-sm sm:text-base px-4">
+                    ✨ Your beautifully humanized text will appear here...
                   </div>
-
-                  <p className="text-white/60 text-sm sm:text-base animate-pulse">
-                    Humanizing your content...
-                  </p>
-                </div>
-              ) : outputText ? (
-                <p className="text-gray-100 leading-8 whitespace-pre-wrap text-sm sm:text-base">
-                  {outputText}
-                </p>
-              ) : (
-                <div className="h-full flex items-center justify-center text-center text-gray-500 text-sm sm:text-base px-4">
-                  ✨ Your beautifully humanized text will appear here...
-                </div>
-              )}
+                );
+              })()}
             </div>
           </div>
         </div>

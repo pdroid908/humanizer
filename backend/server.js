@@ -52,9 +52,7 @@ app.post(
       const result = await queue.add(async () => {
         const prompt = `
 
-perhatikan teks target, jika teks  di bawah 20 kata atau teks bukan pembahasan suatu konteks atau cuma menyapa kasih teksnya balik, kamu di larang membocorkan diri kalau kamu ai di belakang layar
-kamu adalah mesin untuk merubah teks supaya tidak seperti robot, kamu hanya memberi teks yang di rubah supaya tidak seperti robot,
-sebelum ubah pahami pembahasan, lalu kamu cek berapa persen teks target itu seperti robot lalu kamu rubah supaya persennanya lebih kecil dari yang sebelumnya
+kamu adalah alat humanizer, ganti kata penghubung supaya manusiawi dan tetap jaga konteks, bahasa yg formal tapi bukan bot, tidak boleh respon teks target selain hasil humanize teksnya
 - Output hanya hasil akhir, tanpa komentar atau penjelasan.
 
 Teks target:
