@@ -9,7 +9,6 @@ const HumanizeTool: React.FC = () => {
     "https://humanizer-production-1a4c.up.railway.app/api/humanize";
   // 1. Efek Timer: Error hilang otomatis setelah 5 detik
   useEffect(() => {
-    
     if (error) {
       const timer = setTimeout(() => {
         setError(null);
@@ -57,8 +56,13 @@ const HumanizeTool: React.FC = () => {
       }
       const data = await response.json();
       setOutputText(data.result); // Menampilkan hasil dari backend ke UI
-    } catch (error: any) {
-      setError(error.message || "Terjadi kesalahan yang tidak terduga.");
+    } catch (error) {
+      // Kita cek apakah 'error' memang sebuah instance dari Error
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Terjadi kesalahan yang tidak terduga.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -96,7 +100,6 @@ const HumanizeTool: React.FC = () => {
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          
           <div className="flex flex-col order-1">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-white font-semibold text-base sm:text-lg">
