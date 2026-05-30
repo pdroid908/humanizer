@@ -30,7 +30,7 @@ jobs:
       
       - name: Gitleaks
         uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7
-      
+
 
       - name: build
         run: npm run build

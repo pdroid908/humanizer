@@ -9,11 +9,13 @@ const PQueue = require("p-queue").default;
 const { body, validationResult } = require("express-validator");
 const app = express();
 const corsOptions = {
-  origin: 'https://humanizer-638.pages.dev', // HANYA website ini yang boleh akses
+  origin: ['https://humanizer-638.pages.dev','http://localhost:5173'], // HANYA website ini yang boleh akses
   methods: ['POST'] // HANYA boleh kirim data
 };
-app.use(helmet());
+
 app.use(cors(corsOptions));
+app.use(helmet());
+
 app.use(express.json({ limit: "10kb" }));
 
 const groq = new Groq({ apiKey: process.env.GEMINI_API_KEY });
@@ -52,9 +54,7 @@ app.post(
       const result = await queue.add(async () => {
         const prompt = `
 
-kamu adalah alat humanizer, ganti kata penghubung supaya manusiawi dan tetap jaga konteks, bahasa yg formal tapi bukan bot, tidak boleh respon teks target selain hasil humanize teksnya
-- Output hanya hasil akhir, tanpa komentar atau penjelasan.
-
+pharapraser teks target dengan tone standart, kamu hanya memberi hasil dari pharapraser teks target tersebut
 Teks target:
 "${text}"
 
