@@ -96,7 +96,7 @@ const HumanizeTool: React.FC = () => {
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* INPUT */}
+          
           <div className="flex flex-col order-1">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-white font-semibold text-base sm:text-lg">
