@@ -53,8 +53,7 @@ app.post(
       // Cukup panggil antrean sekali saja
       const result = await queue.add(async () => {
         const prompt = `
-
-pharapraser teks target dengan tone standart, dan jaga konteks pembahasannya, kamu hanya memberi hasil dari pharapraser teks target tersebut
+        teks target itu akan di tes di ai detector, tolong ubahkan supaya pov manusia lebih tinggi bukan robot, berikan hanya hasil perubahan teks target jangan beri lainya.
 Teks target:
 "${text}"
 

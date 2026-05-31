@@ -3,12 +3,13 @@ const HumanizeTool: React.FC = () => {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  
   const [error, setError] = useState<string | null>(null);
   const API_URL =
     "https://humanizer-production-1a4c.up.railway.app/api/humanize";
   // 1. Efek Timer: Error hilang otomatis setelah 5 detik
   useEffect(() => {
+    
     if (error) {
       const timer = setTimeout(() => {
         setError(null);
@@ -17,13 +18,23 @@ const HumanizeTool: React.FC = () => {
     }
   }, [error, setError]);
 
+const [iscopied, setiscopied] = useState(false)
+const handlecopy = () => {
+  navigator.clipboard.writeText(outputText);
+  setiscopied(true);
+
+  // Mengembalikan ke "Copy" setelah 4000ms (4 detik)
+  setTimeout(() => {
+    setiscopied(false);
+  }, 4000);
+};
   const handleHumanize = async () => {
     if (!inputText.trim()) {
       setError("Teks input tidak boleh kosong. Silakan masukkan sesuatu.");
       return;
     }
 
-    if (inputText.length > 3000) {
+    if (inputText.length > 4000) {
       setError("Teks terlalu panjang. Maksimal 3000 karakter.");
       return;
     }
@@ -67,11 +78,46 @@ const HumanizeTool: React.FC = () => {
       setIsLoading(false);
     }
   };
-
+const marqueeItems = ["✨ ovo/gopay 081328343908", "✨Nama mu", "✨Muncul disini", "✨ ARTUPSTUDIO"];
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 flex items-center justify-center p-4 md:p-8 overflow-hidden relative">
       {/* Background Glow */}
+{/* Teks Melayang (Marquee) */}
+<div 
+  className="fixed top-0 left-0 w-full z-[100] overflow-hidden bg-black/40 backdrop-blur-md border-b border-white/10 py-2"
+>
+  <div 
+    className="flex whitespace-nowrap"
+    style={{
+      animation: 'marquee 15s linear infinite',
+    }}
+  >
+    {/* Style ini yang akan memaksa browser menjalankan animasinya */}
+    <style>{`
+      @keyframes marquee {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+      }
+    `}</style>
+    
+{marqueeItems.map((rowId) => (
+  <div
+    key={rowId}
+    className="flex gap-16 px-8 whitespace-nowrap"
+  >
+    {marqueeItems.map((item) => (
+      <span
+        key={item}
+        className="text-cyan-300 font-bold text-xs uppercase tracking-widest italic"
+      >
+        {item}
+      </span>
+    ))}
+  </div>
+))}
 
+  </div>
+</div>
       <div className="absolute top-0 left-0 w-72 h-72 md:w-96 md:h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"></div>
 
       <div className="absolute bottom-0 right-0 w-72 h-72 md:w-96 md:h-96 bg-fuchsia-500/20 rounded-full blur-3xl animate-pulse"></div>
@@ -79,22 +125,21 @@ const HumanizeTool: React.FC = () => {
       {/* Main Card */}
       <div className="relative w-full max-w-7xl rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_0_80px_rgba(0,0,0,0.4)] p-5 sm:p-6 md:p-10">
         {/* Header SEO Optimized */}
+        
         <div className="text-center mb-8 md:mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-cyan-300 text-xs sm:text-sm tracking-widest uppercase">
-            ✨ AI Powered Humanizer
+            ARTUP STUDIO
           </div>
 
           {/* H1 Tag Penting untuk SEO */}
-          <h1 className="mt-5 text-4xl sm:text-5xl md:text-6xl font-black text-white leading-tight">
+          <h1 className="mt-5 text-2xl sm:text-5xl md:text-4xl font-black text-white leading-tight">
             AI Humanizer: Ubah Teks AI Jadi Alami
           </h1>
 
           {/* Deskripsi Deskriptif untuk Keyword SEO */}
           <p className="mt-4 text-sm sm:text-base md:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed px-2">
             Ubah teks hasil generate ChatGPT, Claude, atau AI lainnya menjadi
-            tulisan yang lebih natural, manusiawi, dan lolos deteksi AI. Gunakan
-            alat AI Humanizer kami untuk membuat konten Anda lebih orisinal dan
-            mudah dibaca.
+            tulisan yang lebih natural, dan manusiawi.
           </p>
         </div>
 
@@ -117,9 +162,9 @@ const HumanizeTool: React.FC = () => {
               placeholder="Paste your AI generated text here..."
               className="
                 w-full
-                h-[280px]
+                h-[200px]
                 sm:h-[320px]
-                md:h-[380px]
+                md:h-[300px]
                 rounded-3xl
                 bg-slate-900/80
                 border
@@ -173,7 +218,7 @@ const HumanizeTool: React.FC = () => {
 
               {outputText && (
                 <button
-                  onClick={() => navigator.clipboard.writeText(outputText)}
+                  onClick={handlecopy}
                   className="
                     text-cyan-300
                     hover:text-cyan-200
@@ -182,12 +227,12 @@ const HumanizeTool: React.FC = () => {
                     transition
                   "
                 >
-                  Copy
+                  {iscopied ? "Copied!" : "Copy"}
                 </button>
               )}
             </div>
 
-            <div className="w-full h-[280px] sm:h-[320px] md:h-[380px] rounded-3xl bg-slate-900/80 border border-white/10 p-5 overflow-auto shadow-inner">
+            <div className="w-full h-[200px] sm:h-[320px] md:h-[300px] rounded-3xl bg-slate-900/80 border border-white/10 p-5 overflow-auto shadow-inner">
               {(() => {
                 // Logika di sini untuk menentukan apa yang ditampilkan
                 if (isLoading) {
@@ -216,11 +261,30 @@ const HumanizeTool: React.FC = () => {
                   <div className="h-full flex items-center justify-center text-center text-gray-500 text-sm sm:text-base px-4">
                     ✨ Your beautifully humanized text will appear here...
                   </div>
+                  
                 );
-              })()}
+                })()}
             </div>
           </div>
         </div>
+{/* FOOTER */}
+<footer className="relative mt-12 text-center text-white/40 text-xs sm:text-sm px-4 pb-8">
+  <div className="max-w-3xl mx-auto flex flex-col gap-4">
+    <p>
+      © 2026 ARTUPSTUDIO. Kami membantu mengubah teks hasil AI menjadi tulisan yang lebih natural, 
+      Namun jangan lupa cek kembali hasilnya, karna tidak ada yang sempurna selain Tuhan.
+    </p>
+    
+    <p className="text-[11px] uppercase tracking-widest opacity-60">
+      AI Text Humanizer • Bypass AI Detection • Natural Content Rewriter
+    </p>
+    
+    <p className="text-[10px] text-white/20 italic">
+      Optimalkan kualitas tulisan Anda dengan teknologi humanisasi teks terbaik.
+    </p>
+  </div>
+</footer>
+
       </div>
 
       {/* Area Pesan Error Floating */}
