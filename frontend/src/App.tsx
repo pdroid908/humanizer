@@ -80,19 +80,19 @@ const handlecopy = () => {
   };
 const marqueeItems = ["✨ ovo/gopay 081328343908", "✨Nama mu", "✨Muncul disini", "✨ ARTUPSTUDIO"];
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 flex items-center justify-center p-4 md:p-8 overflow-hidden relative">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 flex items-center justify-center p-8 md:p-8 overflow-hidden relative">
       {/* Background Glow */}
 {/* Teks Melayang (Marquee) */}
 <div 
-  className="fixed top-0 left-0 w-full z-[100] overflow-hidden bg-black/40 backdrop-blur-md border-b border-white/10 py-2"
+  className="fixed top-0 left-0 w-full z-[100] overflow-hidden bg-black/40 backdrop-blur-md border-b border-white/10 py-3"
 >
   <div 
     className="flex whitespace-nowrap"
     style={{
-      animation: 'marquee 15s linear infinite',
+      animation: 'marquee 25s linear infinite',
     }}
   >
-    {/* Style ini yang akan memaksa browser menjalankan animasinya */}
+
     <style>{`
       @keyframes marquee {
         0% { transform: translateX(100%); }
@@ -108,7 +108,7 @@ const marqueeItems = ["✨ ovo/gopay 081328343908", "✨Nama mu", "✨Muncul dis
     {marqueeItems.map((item) => (
       <span
         key={item}
-        className="text-cyan-300 font-bold text-xs uppercase tracking-widest italic"
+        className="text-cyan-300 font-bold text-xl uppercase tracking-widest italic"
       >
         {item}
       </span>
